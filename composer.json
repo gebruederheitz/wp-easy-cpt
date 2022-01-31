@@ -1,0 +1,21 @@
+{
+    "name": "gebruederheitz/wp-easy-cpt",
+    "description": "Easy to use tools for a robust Wordpress custom post type setup.",
+    "type": "library",
+    "license": "GPL-3.0-only",
+    "autoload": {
+        "psr-4": {
+            "Gebruederheitz\\Wordpress\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andreas Maros",
+            "email": "andreas.maros@gebruederheitz.de"
+        }
+    ],
+    "require": {
+	    "php": "^7.3",
+        "gebruederheitz/simple-singleton": "^1.0"
+    }
+}
