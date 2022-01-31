@@ -126,7 +126,7 @@ abstract class AbstractRepository
         $posts = static::getPosts();
 
         foreach($posts as $post) {
-            $entity = self::entityFromPostId($post->ID, $post);
+            $entity = static::entityFromPostId($post->ID, $post);
 
             $result[$post->ID] = [
                 'item'  => $entity,
@@ -183,7 +183,7 @@ abstract class AbstractRepository
             $isDirty = false;
 
             try {
-                $entity = self::entityFromPostId($postId);
+                $entity = static::entityFromPostId($postId);
                 $this->entities[$postId] = [
                     'item'  => $entity,
                     'dirty' => false,
@@ -225,7 +225,7 @@ abstract class AbstractRepository
             $post = get_post($postId);
         }
 
-        $meta = self::getMetaValues($postId);
+        $meta = static::getMetaValues($postId);
 
         return new static::$entityClass($post, $meta);
     }
@@ -237,6 +237,6 @@ abstract class AbstractRepository
      */
     protected function persist(StorableEntity $item): void
     {
-        update_post_meta($item->getPostId(), self::$metaKey, $item->toMetaValues());
+        update_post_meta($item->getPostId(), static::$metaKey, $item->toMetaValues());
     }
 }
