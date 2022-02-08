@@ -5,8 +5,8 @@ namespace Gebruederheitz\Wordpress\CustomPostType;
 use WP_Block_Editor_Context;
 use WP_Post;
 
-abstract class PostType implements PostTypeInterface {
-
+abstract class PostType implements PostTypeInterface
+{
     public static $postTypeName = '';
     public static $prettyName = '';
 
@@ -39,14 +39,25 @@ abstract class PostType implements PostTypeInterface {
     {
         add_action('init', [$this, 'onInit']);
         add_action('admin_init', [$this, 'onAdminInit']);
-        add_action('save_post_'.static::$postTypeName, [$this, 'onSavePostMeta']);
+        add_action('save_post_' . static::$postTypeName, [
+            $this,
+            'onSavePostMeta',
+        ]);
 
         if ($this->withMedia) {
-            add_action('admin_enqueue_scripts', [$this, 'onAdminEnqueueScripts']);
+            add_action('admin_enqueue_scripts', [
+                $this,
+                'onAdminEnqueueScripts',
+            ]);
         }
 
         if ($this->withGutenberg) {
-            add_filter('allowed_block_types_all', [$this, 'onAllowedBlockTypes'], 20, 2);
+            add_filter(
+                'allowed_block_types_all',
+                [$this, 'onAllowedBlockTypes'],
+                20,
+                2,
+            );
         }
     }
 
@@ -75,9 +86,14 @@ abstract class PostType implements PostTypeInterface {
      *
      * @return array
      */
-    public function onAllowedBlockTypes($allowedBlockTypes, WP_Block_Editor_Context $context)
-    {
-        if (isset($context->post) && $context->post->post_type !== static::$postTypeName) {
+    public function onAllowedBlockTypes(
+        $allowedBlockTypes,
+        WP_Block_Editor_Context $context
+    ) {
+        if (
+            isset($context->post) &&
+            $context->post->post_type !== static::$postTypeName
+        ) {
             return $allowedBlockTypes;
         }
         return $this->allowedBlockTypes;
@@ -128,8 +144,9 @@ abstract class PostType implements PostTypeInterface {
     /**
      * Allows you to modify the arguments for the post type's registration call.
      */
-    protected function editRegistrationArgs(PostTypeRegistrationArgs $args): PostTypeRegistrationArgs
-    {
+    protected function editRegistrationArgs(
+        PostTypeRegistrationArgs $args
+    ): PostTypeRegistrationArgs {
         return $args;
     }
 
@@ -149,8 +166,8 @@ abstract class PostType implements PostTypeInterface {
     protected function registerMetabox()
     {
         add_meta_box(
-            static::$postTypeName.'_meta',
-            static::$prettyName.' Details',
+            static::$postTypeName . '_meta',
+            static::$prettyName . ' Details',
             [$this, 'renderMetabox'],
             static::$postTypeName,
             'side',

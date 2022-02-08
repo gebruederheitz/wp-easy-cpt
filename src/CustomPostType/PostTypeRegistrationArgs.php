@@ -198,10 +198,7 @@ class PostTypeRegistrationArgs
      *
      * @var array
      */
-    protected $supports = [
-        'title',
-        'editor',
-    ];
+    protected $supports = ['title', 'editor'];
 
     /**
      * Provide a callback function that sets up the meta boxes for the edit form.
@@ -308,26 +305,26 @@ class PostTypeRegistrationArgs
      */
     protected $templateLock;
 
-    public function __construct(PostTypeInterface $postType, string $translationDomain)
-    {
+    public function __construct(
+        PostTypeInterface $postType,
+        string $translationDomain
+    ) {
         $this->postType = $postType;
         $this->translationDomain = $translationDomain;
 
         $this->setDescription($postType::getPrettyName() . ' custom post type');
-        $this->setLabels(
-            [
-                'name' => _x(
-                    $postType::getPrettyName(),
-                    $postType::getPrettyName() . ' post type general name',
-                    $translationDomain
-                ),
-                'singular_name' => _x(
-                    $postType::getPrettyName(),
-                    $postType::getPrettyName() . ' post type singular name',
-                    $translationDomain
-                ),
-            ]
-        );
+        $this->setLabels([
+            'name' => _x(
+                $postType::getPrettyName(),
+                $postType::getPrettyName() . ' post type general name',
+                $translationDomain,
+            ),
+            'singular_name' => _x(
+                $postType::getPrettyName(),
+                $postType::getPrettyName() . ' post type singular name',
+                $translationDomain,
+            ),
+        ]);
 
         if ($postType->usesGutenberg()) {
             $this->setShowInRest(true);
@@ -353,8 +350,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setDescription(string $description): PostTypeRegistrationArgs
-    {
+    public function setDescription(
+        string $description
+    ): PostTypeRegistrationArgs {
         $this->description = $description;
 
         return $this;
@@ -377,8 +375,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setHierarchical(bool $hierarchical): PostTypeRegistrationArgs
-    {
+    public function setHierarchical(
+        bool $hierarchical
+    ): PostTypeRegistrationArgs {
         $this->hierarchical = $hierarchical;
 
         return $this;
@@ -389,8 +388,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setExcludeFromSearch(bool $excludeFromSearch): PostTypeRegistrationArgs
-    {
+    public function setExcludeFromSearch(
+        bool $excludeFromSearch
+    ): PostTypeRegistrationArgs {
         $this->excludeFromSearch = $excludeFromSearch;
 
         return $this;
@@ -401,8 +401,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setPubliclyQueryable(bool $publiclyQueryable): PostTypeRegistrationArgs
-    {
+    public function setPubliclyQueryable(
+        bool $publiclyQueryable
+    ): PostTypeRegistrationArgs {
         $this->publiclyQueryable = $publiclyQueryable;
 
         return $this;
@@ -437,8 +438,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setShowInNavMenus(bool $showInNavMenus): PostTypeRegistrationArgs
-    {
+    public function setShowInNavMenus(
+        bool $showInNavMenus
+    ): PostTypeRegistrationArgs {
         $this->showInNavMenus = $showInNavMenus;
 
         return $this;
@@ -449,8 +451,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setShowInAdminBar(bool $showInAdminBar): PostTypeRegistrationArgs
-    {
+    public function setShowInAdminBar(
+        bool $showInAdminBar
+    ): PostTypeRegistrationArgs {
         $this->showInAdminBar = $showInAdminBar;
 
         return $this;
@@ -485,8 +488,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setRestControllerClass(string $restControllerClass): PostTypeRegistrationArgs
-    {
+    public function setRestControllerClass(
+        string $restControllerClass
+    ): PostTypeRegistrationArgs {
         $this->restControllerClass = $restControllerClass;
 
         return $this;
@@ -521,8 +525,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setCapabilityType(string $capabilityType): PostTypeRegistrationArgs
-    {
+    public function setCapabilityType(
+        string $capabilityType
+    ): PostTypeRegistrationArgs {
         $this->capabilityType = $capabilityType;
 
         return $this;
@@ -533,8 +538,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setCapabilities(array $capabilities): PostTypeRegistrationArgs
-    {
+    public function setCapabilities(
+        array $capabilities
+    ): PostTypeRegistrationArgs {
         $this->capabilities = $capabilities;
 
         return $this;
@@ -557,7 +563,8 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setRegisterMetaBoxCb(callable $registerMetaBoxCb
+    public function setRegisterMetaBoxCb(
+        callable $registerMetaBoxCb
     ): PostTypeRegistrationArgs {
         $this->registerMetaBoxCb = $registerMetaBoxCb;
 
@@ -629,8 +636,9 @@ class PostTypeRegistrationArgs
      *
      * @return PostTypeRegistrationArgs
      */
-    public function setDeleteWithUser(bool $deleteWithUser): PostTypeRegistrationArgs
-    {
+    public function setDeleteWithUser(
+        bool $deleteWithUser
+    ): PostTypeRegistrationArgs {
         $this->deleteWithUser = $deleteWithUser;
 
         return $this;
@@ -665,7 +673,7 @@ class PostTypeRegistrationArgs
         $this->labels['name'] = _x(
             $label,
             $this->postType::getPrettyName() . ' post type general name',
-            $this->translationDomain
+            $this->translationDomain,
         );
 
         return $this;

@@ -7,9 +7,9 @@ use Gebruederheitz\SimpleSingleton\SingletonInterface;
 use WP_Post;
 use Throwable;
 
-abstract class AbstractRepository
-    extends Singleton
-    implements EntityRepository, SingletonInterface
+abstract class AbstractRepository extends Singleton implements
+    EntityRepository,
+    SingletonInterface
 {
     public static $metaKey;
 
@@ -86,7 +86,7 @@ abstract class AbstractRepository
      */
     public function flush(): EntityRepository
     {
-        $dirtyEntries = array_filter($this->entities, function($entity) {
+        $dirtyEntries = array_filter($this->entities, function ($entity) {
             return $entity['dirty'] === true;
         });
 
@@ -120,16 +120,17 @@ abstract class AbstractRepository
      *
      * @return StorableEntity[]
      */
-    protected static function getAllFromDB(): array {
+    protected static function getAllFromDB(): array
+    {
         $result = [];
 
         $posts = static::getPosts();
 
-        foreach($posts as $post) {
+        foreach ($posts as $post) {
             $entity = static::entityFromPostId($post->ID, $post);
 
             $result[$post->ID] = [
-                'item'  => $entity,
+                'item' => $entity,
                 'dirty' => false,
             ];
         }
@@ -140,10 +141,6 @@ abstract class AbstractRepository
     /**
      * Helper to retrieve the post meta fields (array format) from the DB via
      * the post's ID.
-     *
-     * @param int $postId
-     *
-     * @return array|string
      */
     protected static function getMetaValues(int $postId): array
     {
@@ -171,7 +168,7 @@ abstract class AbstractRepository
     {
         if (!$postId) {
             $isDirty = true;
-            return new static::$entityClass;
+            return new static::$entityClass();
         }
 
         if (isset($this->entities[$postId])) {
@@ -185,15 +182,20 @@ abstract class AbstractRepository
             try {
                 $entity = static::entityFromPostId($postId);
                 $this->entities[$postId] = [
-                    'item'  => $entity,
+                    'item' => $entity,
                     'dirty' => false,
                 ];
 
                 return $entity;
             } catch (Throwable $e) {
-                error_log('Failed to fetch entity in repository '. static::class .' from DB for post id ' . $postId);
+                error_log(
+                    'Failed to fetch entity in repository ' .
+                        static::class .
+                        ' from DB for post id ' .
+                        $postId,
+                );
                 error_log('Original error message: ' . $e->getMessage());
-                $entity = new static::$entityClass;
+                $entity = new static::$entityClass();
                 $entity->setPostId($postId);
                 return $entity;
             }
@@ -219,8 +221,10 @@ abstract class AbstractRepository
      *
      * @return StorableEntity An instance of the entity type defined in static::$entityClass
      */
-    protected static function entityFromPostId(int $postId, WP_Post $post = null): StorableEntity
-    {
+    protected static function entityFromPostId(
+        int $postId,
+        WP_Post $post = null
+    ): StorableEntity {
         if (empty($post)) {
             $post = get_post($postId);
         }
@@ -237,6 +241,10 @@ abstract class AbstractRepository
      */
     protected function persist(StorableEntity $item): void
     {
-        update_post_meta($item->getPostId(), static::$metaKey, $item->toMetaValues());
+        update_post_meta(
+            $item->getPostId(),
+            static::$metaKey,
+            $item->toMetaValues(),
+        );
     }
 }

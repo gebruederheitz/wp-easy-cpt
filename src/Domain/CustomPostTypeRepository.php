@@ -31,11 +31,12 @@ class CustomPostTypeRepository extends AbstractRepository
      */
     protected static function getPosts(): array
     {
-        return get_posts(
-            [
-                'post_type' => call_user_func([static::$postTypeClass, 'getPostTypeName']),
-                'numberposts' => -1,
-            ]
-        );
+        return get_posts([
+            'post_type' => call_user_func([
+                static::$postTypeClass,
+                'getPostTypeName',
+            ]),
+            'numberposts' => -1,
+        ]);
     }
 }
