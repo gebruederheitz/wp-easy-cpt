@@ -6,9 +6,16 @@ use WP_Post;
 
 interface StorableEntity
 {
-    public function __construct(WP_Post $post = null, $meta = []);
+    /**
+     * @param WP_Post|null $post
+     * @param array<string, mixed> $meta
+     */
+    public function __construct(WP_Post $post = null, array $meta = []);
 
     public function getPostId(): ?int;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toMetaValues(): array;
 }

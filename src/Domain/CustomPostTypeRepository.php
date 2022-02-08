@@ -6,6 +6,7 @@ use WP_Post;
 
 class CustomPostTypeRepository extends AbstractRepository
 {
+    /** @var string */
     public static $metaKey;
 
     /** @var StorableEntity[] */

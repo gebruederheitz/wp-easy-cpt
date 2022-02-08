@@ -11,9 +11,10 @@ abstract class AbstractRepository extends Singleton implements
     EntityRepository,
     SingletonInterface
 {
+    /** @var string */
     public static $metaKey;
 
-    /** @var StorableEntity[] */
+    /** @var array */
     protected $entities = [];
 
     /** @var string */
@@ -40,8 +41,6 @@ abstract class AbstractRepository extends Singleton implements
 
     /**
      * Retrieves all entity items from the cache or database.
-     *
-     * @return StorableEntity[]
      */
     public function findAll(): array
     {
@@ -117,8 +116,6 @@ abstract class AbstractRepository extends Singleton implements
     /**
      * Retrieve all posts fetched by getPosts() directly from the database and
      * instantiate them into StorableEntities using entityFromPostId().
-     *
-     * @return StorableEntity[]
      */
     protected static function getAllFromDB(): array
     {

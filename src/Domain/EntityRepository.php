@@ -4,11 +4,8 @@ namespace Gebruederheitz\Wordpress\Domain;
 
 interface EntityRepository
 {
-    public function find(?int $postId, &$isDirty = null): ?StorableEntity;
+    public function find(?int $postId, bool &$isDirty = null): ?StorableEntity;
 
-    /**
-     * @return StorableEntity[]
-     */
     public function findAll(): array;
 
     public function save(StorableEntity $item): EntityRepository;
