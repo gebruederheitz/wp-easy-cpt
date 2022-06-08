@@ -142,16 +142,14 @@ class NewsPostType extends PostType
      * type definitions it uses the PostTypeRegistrationArgs configuration
      * object.
      * To modify the arguments passed to `register_post_type` you can override
-     * the method getRegistrationArgs() and call the fluent setters on the
+     * the method editRegistrationArgs() and call the fluent setters on the
      * PostTypeRegistrationArgs object provided.
      */
 
     /**
      * Modify the arguments for the post type's registration call.
-     *
-     * @return array
      */
-    protected function getRegistrationArgs(PostTypeRegistrationArgs $args): PostTypeRegistrationArgs 
+    protected function editRegistrationArgs(PostTypeRegistrationArgs $args): PostTypeRegistrationArgs 
     {
          $args->addAuthorSupport();
          // Setters in PostTypeRegistrationArgs can be chained:
