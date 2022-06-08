@@ -11,6 +11,8 @@ abstract class PostType implements PostTypeInterface
     public static $postTypeName = '';
     /** @var string */
     public static $prettyName = '';
+    /** @var 'side'|'normal'|'advanced' */
+    public static $context = 'side';
 
     /** @var bool Whether to use a Gutenberg editor and call the allowed block types hook. */
     protected $withGutenberg = false;
@@ -166,7 +168,7 @@ abstract class PostType implements PostTypeInterface
             static::$prettyName . ' Details',
             [$this, 'renderMetabox'],
             static::$postTypeName,
-            'side',
+            self::$context,
             'low',
         );
     }

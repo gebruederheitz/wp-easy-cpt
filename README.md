@@ -34,6 +34,12 @@ class NewsPostType extends PostType
      * @required The name users will see 
      */
     public static $prettyName = 'News';
+    
+    /**
+     * @optional Where the metabox will appear: one of 'side', 'normal', 'advanced'
+     * @default 'side'
+     */
+    public static $context = 'normal';
 
     /** 
      * @var bool Whether to use a Gutenberg editor and call the allowed block 
@@ -449,7 +455,7 @@ class ViewCountRepository extends AbstractRepository
     }
 ```
 
-#### Example: Overriding `entityFromPostId` when storing data in separate meta fields (cmd2 etc.)
+#### Example: Overriding `entityFromPostId` when storing data in separate meta fields (cmb2 etc.)
 
 ```php
 
@@ -472,7 +478,7 @@ class ViewCountRepository extends AbstractRepository
         // object if it hasn't been passed, and get the meta values for
         // static::$metaKey.
         //
-        // Now we add some meta values stored separately, e.g. when using cmd2 /
+        // Now we add some meta values stored separately, e.g. when using cmb2 /
         // CustomMetaBoxes2
         $meta['some-other-key'] = get_post_meta($postId, '_some-other-key', true);
         
