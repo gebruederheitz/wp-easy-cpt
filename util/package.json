@@ -7,7 +7,7 @@
     "node": ">=16"
   },
   "scripts": {
-    "lint": "prettier -c --config .prettierrc ../src/",
+    "lint": "prettier -c --config ../.prettierrc ../src/",
     "release": "release-it --only-version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

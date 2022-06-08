@@ -7,6 +7,12 @@ use Gebruederheitz\SimpleSingleton\SingletonInterface;
 use WP_Post;
 use Throwable;
 
+/**
+ * @phpstan-template T of StorableEntity
+ * @template T of StorableEntity
+ * @implements EntityRepository<T>
+ * @phpstan-type ResultArray array<int, array{item: T, dirty: bool}>
+ */
 abstract class AbstractRepository extends Singleton implements
     EntityRepository,
     SingletonInterface
@@ -14,10 +20,10 @@ abstract class AbstractRepository extends Singleton implements
     /** @var string */
     public static $metaKey;
 
-    /** @var array */
+    /** @var ResultArray */
     protected $entities = [];
 
-    /** @var string */
+    /** @var class-string<T> FQCN of an entity class implementing StorableEntity */
     protected static $entityClass;
 
     /** @var bool */
@@ -31,7 +37,7 @@ abstract class AbstractRepository extends Singleton implements
      *                              that have not been persisted to the database
      *                              yet, false otherwise.
      *
-     * @return StorableEntity|null  The StorableEntity instance for the given
+     * @return T|null               The StorableEntity instance for the given
      *                              post ID on success, null otherwise.
      */
     public function find(?int $postId, &$isDirty = null): ?StorableEntity
@@ -41,6 +47,8 @@ abstract class AbstractRepository extends Singleton implements
 
     /**
      * Retrieves all entity items from the cache or database.
+     *
+     * @return array<T>
      */
     public function findAll(): array
     {
@@ -62,7 +70,7 @@ abstract class AbstractRepository extends Singleton implements
      * Saves a StorableEntity to the repository cache and marks it as dirty. You
      * will need to explicitly call flush() to store it in the database.
      *
-     * @param StorableEntity $item  The RaceItem to be created/updated.
+     * @param T $item  The RaceItem to be created/updated.
      *
      * @return $this Returns itself to allow chaining.
      */
@@ -116,6 +124,8 @@ abstract class AbstractRepository extends Singleton implements
     /**
      * Retrieve all posts fetched by getPosts() directly from the database and
      * instantiate them into StorableEntities using entityFromPostId().
+     *
+     * @return ResultArray
      */
     protected static function getAllFromDB(): array
     {
@@ -138,6 +148,8 @@ abstract class AbstractRepository extends Singleton implements
     /**
      * Helper to retrieve the post meta fields (array format) from the DB via
      * the post's ID.
+     *
+     * @return array<string, mixed>
      */
     protected static function getMetaValues(int $postId): array
     {
@@ -158,8 +170,8 @@ abstract class AbstractRepository extends Singleton implements
      *                              that have not been persisted to the database
      *                              yet, false otherwise.
      *
-     * @return StorableEntity|null  The StorableEntity instance for the given post ID on
-     *                              success, null otherwise.
+     * @return T|null               The StorableEntity instance for the given
+     *                              post ID on success, null otherwise.
      */
     protected function getById(?int $postId, &$isDirty = null): ?StorableEntity
     {
@@ -206,7 +218,7 @@ abstract class AbstractRepository extends Singleton implements
      * Gebruederheitz\Wordpress\CustomPostType\PostType this method has a basic
      * implementation in CustomPostTypeRepository.
      *
-     * @return WP_Post[]
+     * @return array<WP_Post>
      */
     abstract protected static function getPosts(): array;
 
@@ -216,12 +228,12 @@ abstract class AbstractRepository extends Singleton implements
      * @param int $postId
      * @param ?WP_Post $post
      *
-     * @return StorableEntity An instance of the entity type defined in static::$entityClass
+     * @return T An instance of the entity type defined in static::$entityClass
      */
     protected static function entityFromPostId(
         int $postId,
         WP_Post $post = null
-    ): StorableEntity {
+    ) {
         if (empty($post)) {
             $post = get_post($postId);
         }
@@ -234,7 +246,7 @@ abstract class AbstractRepository extends Singleton implements
     /**
      * Save a single StorableEntity's meta fields to the database.
      *
-     * @param StorableEntity $item The StorableEntity to be persisted to the DB.
+     * @param T $item The StorableEntity to be persisted to the DB.
      */
     protected function persist(StorableEntity $item): void
     {

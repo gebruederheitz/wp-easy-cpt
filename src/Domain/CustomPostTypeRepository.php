@@ -2,24 +2,18 @@
 
 namespace Gebruederheitz\Wordpress\Domain;
 
+use Gebruederheitz\Wordpress\CustomPostType\PostTypeInterface;
 use WP_Post;
 
+/**
+ * @phpstan-template T of StorableEntity
+ * @template T of StorableEntity
+ * @extends AbstractRepository<T>
+ */
 class CustomPostTypeRepository extends AbstractRepository
 {
-    /** @var string */
-    public static $metaKey;
-
-    /** @var StorableEntity[] */
-    protected $entities = [];
-
-    /** @var string FQCN of an entity class implementing StorableEntity */
-    protected static $entityClass;
-
-    /** @var string FQCN of a post type class implementing PostTypeInterface */
+    /** @var class-string<PostTypeInterface> FQCN of a post type class implementing PostTypeInterface */
     protected static $postTypeClass;
-
-    /** @var bool */
-    protected $hasRetrievedAll = false;
 
     /**
      * Retrieve all posts that will be processed in getAllFromDB(). By default,

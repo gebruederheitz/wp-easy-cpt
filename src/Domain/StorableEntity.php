@@ -15,6 +15,11 @@ interface StorableEntity
     public function getPostId(): ?int;
 
     /**
+     * @return StorableEntity|void
+     */
+    public function setPostId(int $postId);
+
+    /**
      * @return array<string, mixed>
      */
     public function toMetaValues(): array;

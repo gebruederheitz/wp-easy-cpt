@@ -7,7 +7,9 @@ use WP_Post;
 
 abstract class PostType implements PostTypeInterface
 {
+    /** @var string */
     public static $postTypeName = '';
+    /** @var string */
     public static $prettyName = '';
 
     /** @var bool Whether to use a Gutenberg editor and call the allowed block types hook. */
@@ -16,7 +18,7 @@ abstract class PostType implements PostTypeInterface
     /** @var bool Whether to load the media picker scripts on the edit page. */
     protected $withMedia = false;
 
-    /** @var array List of allowed block types if Gutenberg is enabled. */
+    /** @var array<string> List of allowed block types if Gutenberg is enabled. */
     protected $allowedBlockTypes = [];
 
     /** @var string The translation domain to use for menu labels etc. */
@@ -64,7 +66,7 @@ abstract class PostType implements PostTypeInterface
     /**
      * Action callback method for the "init" hook.
      */
-    public function onInit()
+    public function onInit(): void
     {
         $this->registerPostType();
     }
@@ -72,7 +74,7 @@ abstract class PostType implements PostTypeInterface
     /**
      * Action callback method for the "admin_init" hook.
      */
-    public function onAdminInit()
+    public function onAdminInit(): void
     {
         $this->registerMetabox();
     }
@@ -81,15 +83,15 @@ abstract class PostType implements PostTypeInterface
      * Filter callback method for the "allowed_block_types" hook.
      * Allow only certain blocks to be used in Gutenberg.
      *
-     * @param bool|array              $allowedBlockTypes
+     * @param bool|array<string>      $allowedBlockTypes
      * @param WP_Block_Editor_Context $context
      *
-     * @return array
+     * @return array<string>
      */
     public function onAllowedBlockTypes(
         $allowedBlockTypes,
         WP_Block_Editor_Context $context
-    ) {
+    ): array {
         if (
             isset($context->post) &&
             $context->post->post_type !== static::$postTypeName
@@ -111,7 +113,7 @@ abstract class PostType implements PostTypeInterface
      * Wrapper for handling post meta submissions, forwarding them to abstract
      * savePostMeta().
      */
-    public function onSavePostMeta()
+    public function onSavePostMeta(): void
     {
         global $post;
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($post)) {
@@ -121,20 +123,14 @@ abstract class PostType implements PostTypeInterface
 
     /**
      * Renders the meta box for users to edit additional post type fields.
-     *
-     * @return void
      */
-    abstract public function renderMetabox();
+    abstract public function renderMetabox(): void;
 
     /**
      * Handle the submission of user edited metadata.
-     *
-     * @param WP_POST $post
-     * @param array $data
-     *
-     * @return void
+     * @param array<string, mixed> $data
      */
-    abstract public function savePostMeta(WP_POST $post, array $data);
+    abstract public function savePostMeta(WP_POST $post, array $data): void;
 
     public function usesGutenberg(): bool
     {
@@ -153,7 +149,7 @@ abstract class PostType implements PostTypeInterface
     /**
      * Registers the custom post type.
      */
-    protected function registerPostType()
+    protected function registerPostType(): void
     {
         $args = $this->getRegistrationArgs();
 
@@ -163,7 +159,7 @@ abstract class PostType implements PostTypeInterface
     /**
      * Registers the custom metabox for editing the meta vales.
      */
-    protected function registerMetabox()
+    protected function registerMetabox(): void
     {
         add_meta_box(
             static::$postTypeName . '_meta',
@@ -175,6 +171,9 @@ abstract class PostType implements PostTypeInterface
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getRegistrationArgs(): array
     {
         $args = new PostTypeRegistrationArgs($this, $this->translationDomain);

@@ -2,6 +2,11 @@
 
 namespace Gebruederheitz\Wordpress\CustomPostType;
 
+/**
+ * @phpstan-type TRewriteKey 'slug'|'feeds'|'ep_mask'|'pages'|'with_front'
+ * @phpstan-type RewriteDefinition bool|array<TRewriteKey, bool|string|int>
+ * @phpstan-type BlockDefinition array{0: string, 1: array<string, mixed>}
+ */
 class PostTypeRegistrationArgs
 {
     /** @var PostTypeInterface */
@@ -196,7 +201,7 @@ class PostTypeRegistrationArgs
      * The initial value of 'editor' depends on the value of
      * PostType::$withGutenberg on the PostType passed to the constructor.
      *
-     * @var array
+     * @var array<string>
      */
     protected $supports = ['title', 'editor'];
 
@@ -248,7 +253,8 @@ class PostTypeRegistrationArgs
      *      (int) Endpoint mask to assign. If not specified and permalink_epmask
      *      is set, inherits from $permalink_epmask. If not specified and
      *      permalink_epmask is not set, defaults to EP_PERMALINK.
-     * @var bool|array
+     *
+     * @phpstan-var RewriteDefinition
      */
     protected $rewrite;
 
@@ -289,7 +295,7 @@ class PostTypeRegistrationArgs
      * Array of blocks to use as the default initial state for an editor session.
      * Each item should be an array containing block name and optional attributes.
      *
-     * @var array
+     * @var array<BlockDefinition>
      */
     protected $template;
 
@@ -334,9 +340,7 @@ class PostTypeRegistrationArgs
     }
 
     /**
-     * @param string[] $labels
-     *
-     * @return PostTypeRegistrationArgs
+     * @param array<string> $labels
      */
     public function setLabels(array $labels): PostTypeRegistrationArgs
     {
@@ -345,11 +349,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param string $description
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setDescription(
         string $description
     ): PostTypeRegistrationArgs {
@@ -358,11 +357,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param bool $public
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setPublic(bool $public): PostTypeRegistrationArgs
     {
         $this->public = $public;
@@ -370,11 +364,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param bool $hierarchical
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setHierarchical(
         bool $hierarchical
     ): PostTypeRegistrationArgs {
@@ -383,11 +372,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param bool $excludeFromSearch
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setExcludeFromSearch(
         bool $excludeFromSearch
     ): PostTypeRegistrationArgs {
@@ -396,11 +380,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param bool $publiclyQueryable
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setPubliclyQueryable(
         bool $publiclyQueryable
     ): PostTypeRegistrationArgs {
@@ -409,11 +388,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param bool $showUi
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setShowUi(bool $showUi): PostTypeRegistrationArgs
     {
         $this->showUi = $showUi;
@@ -423,21 +397,14 @@ class PostTypeRegistrationArgs
 
     /**
      * @param bool|string $showInMenu
-     *
-     * @return PostTypeRegistrationArgs
      */
-    public function setShowInMenu($showInMenu)
+    public function setShowInMenu($showInMenu): PostTypeRegistrationArgs
     {
         $this->showInMenu = $showInMenu;
 
         return $this;
     }
 
-    /**
-     * @param bool $showInNavMenus
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setShowInNavMenus(
         bool $showInNavMenus
     ): PostTypeRegistrationArgs {
@@ -446,11 +413,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param bool $showInAdminBar
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setShowInAdminBar(
         bool $showInAdminBar
     ): PostTypeRegistrationArgs {
@@ -459,11 +421,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param bool $showInRest
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setShowInRest(bool $showInRest): PostTypeRegistrationArgs
     {
         $this->showInRest = $showInRest;
@@ -471,11 +428,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param string $restBase
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setRestBase(string $restBase): PostTypeRegistrationArgs
     {
         $this->restBase = $restBase;
@@ -483,11 +435,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param string $restControllerClass
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setRestControllerClass(
         string $restControllerClass
     ): PostTypeRegistrationArgs {
@@ -496,11 +443,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param int $menuPosition
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setMenuPosition(int $menuPosition): PostTypeRegistrationArgs
     {
         $this->menuPosition = $menuPosition;
@@ -508,11 +450,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param string $menuIcon
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setMenuIcon(string $menuIcon): PostTypeRegistrationArgs
     {
         $this->menuIcon = $menuIcon;
@@ -520,11 +457,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param string $capabilityType
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setCapabilityType(
         string $capabilityType
     ): PostTypeRegistrationArgs {
@@ -534,9 +466,7 @@ class PostTypeRegistrationArgs
     }
 
     /**
-     * @param string[] $capabilities
-     *
-     * @return PostTypeRegistrationArgs
+     * @param array<string> $capabilities
      */
     public function setCapabilities(
         array $capabilities
@@ -547,9 +477,7 @@ class PostTypeRegistrationArgs
     }
 
     /**
-     * @param array $supports
-     *
-     * @return PostTypeRegistrationArgs
+     * @param array<string, mixed> $supports
      */
     public function setSupports(array $supports): PostTypeRegistrationArgs
     {
@@ -560,8 +488,6 @@ class PostTypeRegistrationArgs
 
     /**
      * @param callable $registerMetaBoxCb
-     *
-     * @return PostTypeRegistrationArgs
      */
     public function setRegisterMetaBoxCb(
         callable $registerMetaBoxCb
@@ -572,9 +498,7 @@ class PostTypeRegistrationArgs
     }
 
     /**
-     * @param string[] $taxonomies
-     *
-     * @return PostTypeRegistrationArgs
+     * @param array<string> $taxonomies
      */
     public function setTaxonomies(array $taxonomies): PostTypeRegistrationArgs
     {
@@ -585,10 +509,8 @@ class PostTypeRegistrationArgs
 
     /**
      * @param bool|string $hasArchive
-     *
-     * @return PostTypeRegistrationArgs
      */
-    public function setHasArchive($hasArchive)
+    public function setHasArchive($hasArchive): PostTypeRegistrationArgs
     {
         $this->hasArchive = $hasArchive;
 
@@ -596,11 +518,9 @@ class PostTypeRegistrationArgs
     }
 
     /**
-     * @param array|bool $rewrite
-     *
-     * @return PostTypeRegistrationArgs
+     * @phpstan-param RewriteDefinition $rewrite
      */
-    public function setRewrite($rewrite)
+    public function setRewrite($rewrite): PostTypeRegistrationArgs
     {
         $this->rewrite = $rewrite;
 
@@ -609,21 +529,14 @@ class PostTypeRegistrationArgs
 
     /**
      * @param bool|string $queryVar
-     *
-     * @return PostTypeRegistrationArgs
      */
-    public function setQueryVar($queryVar)
+    public function setQueryVar($queryVar): PostTypeRegistrationArgs
     {
         $this->queryVar = $queryVar;
 
         return $this;
     }
 
-    /**
-     * @param bool $canExport
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setCanExport(bool $canExport): PostTypeRegistrationArgs
     {
         $this->canExport = $canExport;
@@ -631,11 +544,6 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    /**
-     * @param bool $deleteWithUser
-     *
-     * @return PostTypeRegistrationArgs
-     */
     public function setDeleteWithUser(
         bool $deleteWithUser
     ): PostTypeRegistrationArgs {
@@ -645,9 +553,7 @@ class PostTypeRegistrationArgs
     }
 
     /**
-     * @param array $template
-     *
-     * @return PostTypeRegistrationArgs
+     * @param array<BlockDefinition> $template
      */
     public function setTemplate(array $template): PostTypeRegistrationArgs
     {
@@ -658,17 +564,15 @@ class PostTypeRegistrationArgs
 
     /**
      * @param false|string $templateLock
-     *
-     * @return PostTypeRegistrationArgs
      */
-    public function setTemplateLock($templateLock)
+    public function setTemplateLock($templateLock): PostTypeRegistrationArgs
     {
         $this->templateLock = $templateLock;
 
         return $this;
     }
 
-    public function setPluralLabel(string $label): self
+    public function setPluralLabel(string $label): PostTypeRegistrationArgs
     {
         $this->labels['name'] = _x(
             $label,
@@ -679,76 +583,79 @@ class PostTypeRegistrationArgs
         return $this;
     }
 
-    public function removeEditorSupport(): self
+    public function removeEditorSupport(): PostTypeRegistrationArgs
     {
         $this->supports = array_diff($this->supports, ['editor']);
 
         return $this;
     }
 
-    public function removeTitleSupport(): self
+    public function removeTitleSupport(): PostTypeRegistrationArgs
     {
         $this->supports = array_diff($this->supports, ['title']);
 
         return $this;
     }
 
-    public function addRevisionSupport(): self
+    public function addRevisionSupport(): PostTypeRegistrationArgs
     {
         array_push($this->supports, 'revisions');
 
         return $this;
     }
 
-    public function addCommentSupport(): self
+    public function addCommentSupport(): PostTypeRegistrationArgs
     {
         array_push($this->supports, 'comments');
 
         return $this;
     }
 
-    public function addTrackbacksSupport(): self
+    public function addTrackbacksSupport(): PostTypeRegistrationArgs
     {
         array_push($this->supports, 'trackbacks');
 
         return $this;
     }
 
-    public function addAuthorSupport(): self
+    public function addAuthorSupport(): PostTypeRegistrationArgs
     {
         array_push($this->supports, 'author');
 
         return $this;
     }
 
-    public function addExcerptSupport(): self
+    public function addExcerptSupport(): PostTypeRegistrationArgs
     {
         array_push($this->supports, 'excerpt');
 
         return $this;
     }
 
-    public function addThumbnailSupport(): self
+    public function addThumbnailSupport(): PostTypeRegistrationArgs
     {
         array_push($this->supports, 'thumbnail');
 
         return $this;
     }
 
-    public function addSupport(string $supportType): self
+    public function addSupport(string $supportType): PostTypeRegistrationArgs
     {
         array_push($this->supports, $supportType);
 
         return $this;
     }
 
-    public function makePublic(): self
+    public function makePublic(): PostTypeRegistrationArgs
     {
         $this->public = true;
 
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function get(): array
     {
         $args = [
