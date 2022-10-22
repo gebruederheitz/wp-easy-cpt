@@ -37,7 +37,7 @@ class CustomPostTypeRepository extends AbstractRepository
         ];
 
         if ($customQuery) {
-            $query = array_merge_recursive($baseQuery, $customQuery);
+            $query = array_merge($baseQuery, $customQuery);
         } else {
             $query = $baseQuery;
         }
