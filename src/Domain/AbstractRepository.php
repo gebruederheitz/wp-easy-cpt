@@ -129,20 +129,9 @@ abstract class AbstractRepository extends Singleton implements
      */
     protected static function getAllFromDB(): array
     {
-        $result = [];
-
         $posts = static::getPosts();
 
-        foreach ($posts as $post) {
-            $entity = static::entityFromPostId($post->ID, $post);
-
-            $result[$post->ID] = [
-                'item' => $entity,
-                'dirty' => false,
-            ];
-        }
-
-        return $result;
+        return self::mapPostsToEntities($posts);
     }
 
     /**
@@ -221,6 +210,27 @@ abstract class AbstractRepository extends Singleton implements
      * @return array<WP_Post>
      */
     abstract protected static function getPosts(): array;
+
+    /**
+     * @param array<WP_Post> $posts
+     *
+     * @return ResultArray
+     */
+    protected static function mapPostsToEntities(array $posts): array
+    {
+        $entities = [];
+
+        foreach ($posts as $post) {
+            $entity = static::entityFromPostId($post->ID, $post);
+
+            $entities[$post->ID] = [
+                'item' => $entity,
+                'dirty' => false,
+            ];
+        }
+
+        return $entities;
+    }
 
     /**
      * Instantiates an entity instance from a post ID.
