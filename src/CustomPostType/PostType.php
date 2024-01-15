@@ -93,7 +93,7 @@ abstract class PostType implements PostTypeInterface
     public function onAllowedBlockTypes(
         $allowedBlockTypes,
         WP_Block_Editor_Context $context
-    ): array {
+    ) {
         if (
             isset($context->post) &&
             $context->post->post_type !== static::$postTypeName
