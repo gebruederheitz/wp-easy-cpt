@@ -1,6 +1,6 @@
 {
   "name": "@gebruederheitz/wp-easy-cpt-util",
-  "version": "2.1.0",
+  "version": "2.3.2",
   "description": "Utilities for the gebruederheitz/wp-easy-cpt PHP composer package",
   "main": "",
   "engines": {

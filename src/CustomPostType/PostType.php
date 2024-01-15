@@ -168,7 +168,7 @@ abstract class PostType implements PostTypeInterface
             static::$prettyName . ' Details',
             [$this, 'renderMetabox'],
             static::$postTypeName,
-            self::$context,
+            static::$context,
             'low',
         );
     }

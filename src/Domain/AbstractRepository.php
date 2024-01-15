@@ -11,7 +11,8 @@ use Throwable;
  * @phpstan-template T of StorableEntity
  * @template T of StorableEntity
  * @implements EntityRepository<T>
- * @phpstan-type ResultArray array<int, array{item: T, dirty: bool}>
+ * //phpstan-type ResultArray<T> array<int, array{item: T, dirty: bool}>
+ * ^ this is not currently possible in phpstan and can not be imported: https://github.com/phpstan/phpstan/issues/6099
  */
 abstract class AbstractRepository extends Singleton implements
     EntityRepository,
@@ -20,7 +21,7 @@ abstract class AbstractRepository extends Singleton implements
     /** @var string */
     public static $metaKey;
 
-    /** @var ResultArray */
+    /** @var array<int, array{item: T, dirty: bool}> */
     protected $entities = [];
 
     /** @var class-string<T> FQCN of an entity class implementing StorableEntity */
@@ -125,24 +126,13 @@ abstract class AbstractRepository extends Singleton implements
      * Retrieve all posts fetched by getPosts() directly from the database and
      * instantiate them into StorableEntities using entityFromPostId().
      *
-     * @return ResultArray
+     * @return array<int, array{item: T, dirty: bool}>
      */
     protected static function getAllFromDB(): array
     {
-        $result = [];
-
         $posts = static::getPosts();
 
-        foreach ($posts as $post) {
-            $entity = static::entityFromPostId($post->ID, $post);
-
-            $result[$post->ID] = [
-                'item' => $entity,
-                'dirty' => false,
-            ];
-        }
-
-        return $result;
+        return self::mapPostsToEntities($posts);
     }
 
     /**
@@ -221,6 +211,27 @@ abstract class AbstractRepository extends Singleton implements
      * @return array<WP_Post>
      */
     abstract protected static function getPosts(): array;
+
+    /**
+     * @param array<WP_Post> $posts
+     *
+     * @return array<int, array{item: T, dirty: bool}>
+     */
+    protected static function mapPostsToEntities(array $posts): array
+    {
+        $entities = [];
+
+        foreach ($posts as $post) {
+            $entity = static::entityFromPostId($post->ID, $post);
+
+            $entities[$post->ID] = [
+                'item' => $entity,
+                'dirty' => false,
+            ];
+        }
+
+        return $entities;
+    }
 
     /**
      * Instantiates an entity instance from a post ID.

@@ -22,16 +22,26 @@ class CustomPostTypeRepository extends AbstractRepository
      * ordering etc., you should override this method the fetch the list of
      * posts relevant to you
      *
+     * @param ?array<string, mixed> $customQuery
+     *
      * @return WP_Post[]
      */
-    protected static function getPosts(): array
+    protected static function getPosts(?array $customQuery = null): array
     {
-        return get_posts([
+        $baseQuery = [
             'post_type' => call_user_func([
                 static::$postTypeClass,
                 'getPostTypeName',
             ]),
             'numberposts' => -1,
-        ]);
+        ];
+
+        if ($customQuery) {
+            $query = array_merge($baseQuery, $customQuery);
+        } else {
+            $query = $baseQuery;
+        }
+
+        return get_posts($query);
     }
 }
